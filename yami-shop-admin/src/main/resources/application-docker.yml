@@ -15,7 +15,7 @@ spring:
       connection-test-query: SELECT 1
   redis:
     host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    port: ${REDIS_PORT:6379}
     database: ${REDIS_DATABASE:0}
 logging:
   config: classpath:logback/logback-prod.xml

@@ -5,6 +5,7 @@ services:
       context: ./
       dockerfile: ./db/Dockerfile
     environment:
+      TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: root
     restart: always
     container_name: mall4j-mysql
@@ -19,6 +20,8 @@ services:
     image: redis:5.0.4
     restart: always
     container_name: mall4j-redis
+    environment:
+      TZ: Asia/Shanghai
     ports:
       - 6379:6379
 
@@ -53,3 +56,23 @@ services:
     links:
       - "mall4j-redis"
       - "mall4j-mysql"
+
+  mall4v:
+    #    build:
+    #      context: ./
+    #      dockerfile: ./mall4v/Dockerfile.prod
+    environment:
+      TZ: Asia/Shanghai
+    image: mall4v:v0.1
+    container_name: mall4v
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - mall4j-admin
+      - mall4j-api
+    links:
+      - "mall4j-api"
+      - "mall4j-admin"
